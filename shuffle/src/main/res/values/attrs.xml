@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Shuffle">
+        <attr name="shuffle_vertical" format="boolean"/>
+        <attr name="shuffle_inlineMove" format="boolean"/>
+        <attr name="shuffle_rotationEnabled" format="boolean"/>
+        <attr name="shuffle_rotation" format="float"/>
+        <attr name="shuffle_velocityMin" format="float"/>
+        <attr name="shuffle_numberOfDisplayedCards" format="integer"/>
+        <attr name="shuffle_differenceScale" format="float"/>
+        <attr name="shuffle_differenceTranslationY" format="dimension"/>
+        <attr name="shuffle_differenceTranslationX" format="dimension"/>
+        <attr name="shuffle_colorLeft" format="color"/>
+        <attr name="shuffle_colorRight" format="color"/>
+        <attr name="shuffle_layoutLeft" format="reference"/>
+        <attr name="shuffle_layoutRight" format="reference"/>
+    </declare-styleable>
+</resources>

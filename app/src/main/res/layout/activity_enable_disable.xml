@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <com.meetic.shuffle.Shuffle
+        android:id="@+id/shuffle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        app:shuffle_colorLeft="@color/colorLeft"
+        app:shuffle_colorRight="@color/colorRight"
+        app:shuffle_differenceTranslationY="5dp"
+        app:shuffle_layoutLeft="@layout/cell_left"
+        app:shuffle_layoutRight="@layout/cell_right"
+        app:shuffle_rotation="10"
+        app:shuffle_velocityMin="2000"
+        />
+
+    <View
+        android:id="@+id/centerHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/enable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/centerHorizontal"
+        android:text="enable"/>
+
+    <Button
+        android:id="@+id/disable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/centerHorizontal"
+        android:text="disable"/>
+
+</RelativeLayout>

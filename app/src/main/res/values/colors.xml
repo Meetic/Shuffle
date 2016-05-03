@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorLeft">#99ea6262</color>
+    <color name="colorRight">#995d5d5d</color>
+
+    <color name="bal_shuffle_right">#8f8f8f</color>
+    <color name="bal_shuffle_left">#ea6262</color>
+</resources>
