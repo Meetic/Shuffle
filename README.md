@@ -197,12 +197,14 @@ shuffle.enable(true / false);
 
 Add into your **build.gradle**
 
-[![Download](https://api.bintray.com/packages/-------/images/download.svg)](https://bintray.com/-------/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/meetic-android/maven/Shuffle/images/download.svg) ](https://bintray.com/meetic-android/maven/Shuffle/_latestVersion)
 
 ```groovy
 compile 'com.meetic.shuffle:shuffle:(last version)'
 compile 'com.meetic.dragueur:dragueur:1.0.0'
 ```
+
+Move your views with [Dragueur][Dragueur] !
 
 # Credits
 
@@ -232,8 +234,7 @@ Contributor: [Florent Champigny][florent]
     limitations under the License.
 
 [repo]: https://github.com/Meetic/Shuffle
-[bintray]: https://bintray.com/-------/_latestVersion
 [androidarsenal]: http://android-arsenal.com/details/--------
 [meetic]: http://www.meetic.fr/
-[dragueur]: https://github.com/-----
+[dragueur]: https://github.com/Meetic/Dragueur
 [florent]: https://github.com/florent37
