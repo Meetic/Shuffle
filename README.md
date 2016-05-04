@@ -26,17 +26,17 @@ Shuffle shuffle = (Shuffle)findViewById(R.id.shuffle);
 shuffle.setShuffleAdapter(new Shuffle.Adapter(){
     @Override
     public Shuffle.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
-        
+
     }
 
     @Override
     public void onBindViewHolder(final Shuffle.ViewHolder viewHolder, int position) {
-        
+
     }
 
     @Override
     public int getItemCount() {
-        
+
     }
 });
 ```
@@ -133,17 +133,17 @@ You can set the max number of cards displayed and adjust the space between cards
 shuffle.addListener(new Shuffle.Listener() {
             @Override
             public void onViewChanged(int position) {
-            
+
             }
 
             @Override
             public void onScrollStarted() {
-            
+
             }
 
             @Override
             public void onScrollFinished() {
-           
+
             }
 
             @Override
@@ -166,7 +166,7 @@ shuffle.addListener(new Shuffle.Listener() {
     //overlay color displayed while scrolling
     app:shuffle_colorRight="@color/blue"
     app:shuffle_colorLeft="@color/blue"
-    
+
     //overlay content displayed while scrolling (ex: containing logo)
     app:shuffle_layoutLeft="@layout/bal_shuffle_cell_left"
     app:shuffle_layoutRight="@layout/bal_shuffle_cell_right"
@@ -200,6 +200,10 @@ Add into your **build.gradle**
 [ ![Download](https://api.bintray.com/packages/meetic-android/maven/Shuffle/images/download.svg) ](https://bintray.com/meetic-android/maven/Shuffle/_latestVersion)
 
 ```groovy
+repositories {
+  maven { url "http://dl.bintray.com/meetic-android/maven" }
+}
+
 compile 'com.meetic.shuffle:shuffle:(last version)'
 compile 'com.meetic.dragueur:dragueur:1.0.0'
 ```
