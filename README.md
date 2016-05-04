@@ -2,6 +2,7 @@ Shuffle
 =======
 
 [![API](https://img.shields.io/badge/API-10%2B-green.svg)][repo]
+[![Build Status](https://travis-ci.org/Meetic/Shuffle.svg?branch=master)](https://travis-ci.org/Meetic/Shuffle)
 
 An easy to use swiping-view for Android
 
