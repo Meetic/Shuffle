@@ -2,7 +2,6 @@ Shuffle
 =======
 
 [![API](https://img.shields.io/badge/API-10%2B-green.svg)][repo]
-[![Android Arsenal](https://img.shields.io/badge/---------brightgreen.svg?style=flat)][androidarsenal]
 
 An easy to use swiping-view for Android
 
