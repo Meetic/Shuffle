@@ -2,9 +2,11 @@ package com.meetic.shuffle;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,6 +25,9 @@ public class CardDraggableView extends DraggableView {
     int layoutRightResId;
 
     ViewGroup content;
+
+    private ShuffleSettings settings;
+    private Shuffle host;
 
     public CardDraggableView(Context context) {
         super(context);
@@ -119,4 +124,106 @@ public class CardDraggableView extends DraggableView {
         overlay = (ViewGroup) findViewById(R.id.overlay);
     }
 
+    @Override public boolean onTouchEvent(MotionEvent event) {
+        if (settings.isHorizontal())
+            return handleTouch(event);
+        return super.onTouchEvent(event);
+    }
+
+    /*
+    handleTouch-related only vars
+     */
+    private float x1, x2, y1, y2, dx, dy;
+    private int sensibility = 100;
+    private String direction = "none";
+
+    /**
+     * Handle touch when scroll is locked to only horizontal (to allow vertical scroll on child views)
+     * @param event The motion event
+     * @return trus is the event is handled
+     */
+    private boolean handleTouch(MotionEvent event) {
+        if (super.isDraggable() && !super.isAnimating()) {
+            final int action = MotionEventCompat.getActionMasked(event);
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    x1 = event.getX();
+                    y1 = event.getY();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    switch (direction) {
+                        case "right":
+                            host.swipeRight(500);
+                            break;
+                        case "left":
+                            host.swipeLeft(500);
+                            break;
+                        case "none":
+                            if (getViewAnimator() != null)
+                                getViewAnimator().animateToOrigin(this, 500);
+                            break;
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    x2 = event.getX();
+                    y2 = event.getY();
+                    dx = x2-x1;
+                    dy = y2-y1;
+
+                    float newMotionX = event.getRawX();
+                    float newMotionY = event.getRawY();
+
+                    float diffMotionX = newMotionX - motionXOrigin;
+                    float diffMotionY = newMotionY - motionYOrigin;
+
+                    if (!super.isInlineMove()) {
+                        ViewCompat.setTranslationY(this, getOriginalViewY() + diffMotionY);
+                    }
+                    ViewCompat.setTranslationX(this, getOriginalViewX() + diffMotionX);
+
+                    this.update();
+
+                    if(Math.abs(dx) > (Math.abs(dy) + sensibility/3)) {
+                        if (diffMotionX > 0) {
+                            if (diffMotionX > sensibility)
+                                direction = "right";
+                            else
+                                direction = "none";
+                        } else if (diffMotionX < 0) {
+                            if (diffMotionX < -sensibility)
+                                direction = "left";
+                            else
+                                direction = "none";
+                        } else {
+                            direction = "none";
+                        }
+                    }
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    switch (direction) {
+                        case "right":
+                            host.swipeRight(500);
+                            break;
+                        case "left":
+                            host.swipeLeft(500);
+                            break;
+                        case "none":
+                            if (getViewAnimator() != null)
+                                getViewAnimator().animateToOrigin(this, 500);
+                            break;
+                    }
+                    break;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void setSettings(ShuffleSettings shuffleSettings) {
+        this.settings = shuffleSettings;
+    }
+
+    public void setHost(Shuffle shuffle) {
+        this.host = shuffle;
+    }
 }

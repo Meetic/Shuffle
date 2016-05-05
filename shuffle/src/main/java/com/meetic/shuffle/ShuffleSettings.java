@@ -25,6 +25,7 @@ public class ShuffleSettings {
     int animationReturnCardDuration = 300;
 
     boolean vertical = false;
+    boolean horizontal = false;
     boolean inlineMove = false;
 
     boolean rotationEnabled = true;
@@ -153,11 +154,16 @@ public class ShuffleSettings {
         return stackFrom == 0;
     }
 
+    public boolean isHorizontal() {
+        return horizontal;
+    }
+
     protected void handleAttributes(Context context, AttributeSet attrs) {
         try {
             TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.Shuffle);
             {
                 this.vertical = styledAttrs.getBoolean(R.styleable.Shuffle_shuffle_vertical, vertical);
+                this.horizontal = styledAttrs.getBoolean(R.styleable.Shuffle_shuffle_horizontal, horizontal);
             }
             {
                 this.rotationEnabled = styledAttrs.getBoolean(R.styleable.Shuffle_shuffle_rotationEnabled, rotationEnabled);
