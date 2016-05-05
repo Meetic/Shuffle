@@ -44,7 +44,13 @@
             android:id="@+id/enableDisable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="enable disable"/>
+            android:text="enable disable"/>stackChange
+
+        <Button
+            android:id="@+id/stackChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stack change"/>
 
     </LinearLayout>
 </ScrollView>
