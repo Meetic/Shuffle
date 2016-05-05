@@ -14,5 +14,9 @@
         <attr name="shuffle_colorRight" format="color"/>
         <attr name="shuffle_layoutLeft" format="reference"/>
         <attr name="shuffle_layoutRight" format="reference"/>
+        <attr name="shuffle_stackFrom" format="enum">
+            <enum name="top" value="0"/>
+            <enum name="bottom" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

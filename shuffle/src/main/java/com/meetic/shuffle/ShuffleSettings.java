@@ -31,6 +31,8 @@ public class ShuffleSettings {
     float rotation = 45f;
     float minVelocity;
 
+    private int stackFrom;
+
     public static float dpToPx(Context context, float dp) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
@@ -147,6 +149,10 @@ public class ShuffleSettings {
         return position * differenceTranslationX;
     }
 
+    public boolean getStackFromTop() {
+        return stackFrom == 0;
+    }
+
     protected void handleAttributes(Context context, AttributeSet attrs) {
         try {
             TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.Shuffle);
@@ -177,10 +183,12 @@ public class ShuffleSettings {
                 this.colorRight = styledAttrs.getColor(R.styleable.Shuffle_shuffle_colorRight, colorRight);
                 this.layoutRightResId = styledAttrs.getResourceId(R.styleable.Shuffle_shuffle_layoutRight, layoutRightResId);
             }
+            {
+                this.stackFrom = styledAttrs.getInteger(R.styleable.Shuffle_shuffle_stackFrom, 1);
+            }
             styledAttrs.recycle();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
