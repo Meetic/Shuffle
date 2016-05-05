@@ -200,10 +200,6 @@ Add into your **build.gradle**
 [ ![Download](https://api.bintray.com/packages/meetic-android/maven/Shuffle/images/download.svg) ](https://bintray.com/meetic-android/maven/Shuffle/_latestVersion)
 
 ```groovy
-repositories {
-  maven { url "http://dl.bintray.com/meetic-android/maven" }
-}
-
 compile 'com.meetic.shuffle:shuffle:(last version)'
 compile 'com.meetic.dragueur:dragueur:1.0.0'
 ```
