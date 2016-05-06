@@ -68,12 +68,16 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
             float scale = shuffle.getShuffleSettings().getScaleForPosition(position);
 
             float translationY = shuffle.getShuffleSettings().getStackFromTop()
-                    ? - shuffle.getShuffleSettings().getTranslationYForPosition(position)
-                    : shuffle.getShuffleSettings().getTranslationYForPosition(position);
+                ? -shuffle.getShuffleSettings().getTranslationYForPosition(position)
+                : shuffle.getShuffleSettings().getTranslationYForPosition(position);
 
             ViewCompat.setScaleX(lastCard, 0.5f);
             ViewCompat.setScaleY(lastCard, 0.5f);
             ViewCompat.setTranslationY(lastCard, 0);
+
+            float translationX = shuffle.getShuffleSettings().getTranslationXForPosition(position);
+            ViewCompat.setTranslationX(lastCard, translationX);
+
             ViewCompat.animate(lastCard)
                 .scaleX(scale)
                 .scaleY(scale)
@@ -107,8 +111,8 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
                 lastCard.reset();
 
                 float translationY = shuffle.getShuffleSettings().getStackFromTop()
-                        ? - shuffle.getShuffleSettings().getTranslationYForPosition(position)
-                        : shuffle.getShuffleSettings().getTranslationYForPosition(position);
+                    ? -shuffle.getShuffleSettings().getTranslationYForPosition(position)
+                    : shuffle.getShuffleSettings().getTranslationYForPosition(position);
 
                 ViewCompat.setTranslationY(lastCard, translationY);
 
@@ -149,12 +153,12 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
                 ViewCompat.setScaleY(view, percentAbs);
 
                 float myTranslationY = shuffle.getShuffleSettings().getStackFromTop()
-                        ? - shuffle.getShuffleSettings().getTranslationYForPosition(i)
-                        : shuffle.getShuffleSettings().getTranslationYForPosition(i);
+                    ? -shuffle.getShuffleSettings().getTranslationYForPosition(i)
+                    : shuffle.getShuffleSettings().getTranslationYForPosition(i);
 
                 float nextTranslationY = shuffle.getShuffleSettings().getStackFromTop()
-                        ? - shuffle.getShuffleSettings().getTranslationYForPosition(i - 1)
-                        : shuffle.getShuffleSettings().getTranslationYForPosition(i - 1);
+                    ? -shuffle.getShuffleSettings().getTranslationYForPosition(i - 1)
+                    : shuffle.getShuffleSettings().getTranslationYForPosition(i - 1);
 
                 float translationY = myTranslationY - Math.abs(percent) * (myTranslationY - nextTranslationY);
                 ViewCompat.setTranslationY(view, translationY);

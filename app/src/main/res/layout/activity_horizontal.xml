@@ -17,7 +17,7 @@
         app:shuffle_differenceTranslationY="5dp"
         app:shuffle_layoutLeft="@layout/cell_left"
         app:shuffle_layoutRight="@layout/cell_right"
-        app:shuffle_numberOfDisplayedCards="6"
+        app:shuffle_numberOfDisplayedCards="3"
         app:shuffle_rotation="10"
         app:shuffle_velocityMin="2000"
         />
