@@ -56,4 +56,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, HorizontalInlineWrapContentActivity.class));
     }
 
+    @OnClick(R.id.innerScroll)
+    public void launchInnerScroll() {
+        startActivity(new Intent(this, HorizontalInlineWrapContentInnerScrollActivity.class));
+    }
+
 }
