@@ -38,6 +38,8 @@ public class Shuffle extends FrameLayout {
 
     Set<Listener> listeners = new HashSet<>();
 
+    OnScrollChangeListener verticalScrollListener;
+
     public Shuffle(Context context) {
         this(context, null);
     }
@@ -102,6 +104,11 @@ public class Shuffle extends FrameLayout {
         return adapterPosition;
     }
 
+    public void addVerticalScrollListener(OnScrollChangeListener verticalScrollListener) {
+        this.verticalScrollListener = verticalScrollListener;
+        currentDraggableView.setVerticalScrollListener(this.verticalScrollListener);
+    }
+
     public CardDraggableView getDraggableView(int position) {
         if (position < draggableViews.size()) {
             return draggableViews.get(position);
@@ -129,6 +136,10 @@ public class Shuffle extends FrameLayout {
         }
     }
 
+    public interface OnScrollChangeListener {
+        void onScrollChange(View v, float scrollX, float scrollY, float oldScrollX, float oldScrollY);
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
@@ -146,7 +157,7 @@ public class Shuffle extends FrameLayout {
     protected void onViewInflated() {
         int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
         for (int i = numberOfCards - 1; i >= 0; i--) {
-            CardDraggableView draggableView = generateDraggableView();
+            CardDraggableView draggableView = generateDraggableView(shuffleSettings, this);
             draggableView.setDraggable(false);
             updateDraggableView(draggableView);
             draggableViews.addFirst(draggableView);
@@ -168,6 +179,14 @@ public class Shuffle extends FrameLayout {
     @VisibleForTesting
     CardDraggableView generateDraggableView() {
         return (CardDraggableView) LayoutInflater.from(getContext()).inflate(R.layout.draggable_view, this, false);
+    }
+
+    @VisibleForTesting
+    CardDraggableView generateDraggableView(ShuffleSettings shuffleSettings, Shuffle shuffle) {
+        CardDraggableView cardDraggableView = (CardDraggableView) LayoutInflater.from(getContext()).inflate(R.layout.draggable_view, this, false);
+        cardDraggableView.setSettings(shuffleSettings);
+        cardDraggableView.setHost(shuffle);
+        return cardDraggableView;
     }
 
     List<ViewHolder> getViewHolderListForType(int viewType) {
@@ -266,6 +285,9 @@ public class Shuffle extends FrameLayout {
         currentDraggableView = draggableViews.getFirst();
         currentDraggableView.setDraggable(true);
         currentDraggableView.reset();
+        if (verticalScrollListener != null) {
+            currentDraggableView.setVerticalScrollListener(this.verticalScrollListener);
+        }
         currentDraggableView.setDragListener(new DraggableView.DraggableViewListener() {
             @Override
             public void onDrag(DraggableView draggableView, float percentX, float percentY) {
