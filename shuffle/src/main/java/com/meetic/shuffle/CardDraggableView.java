@@ -28,6 +28,7 @@ public class CardDraggableView extends DraggableView {
 
     private ShuffleSettings settings;
     private Shuffle host;
+    private Shuffle.OnScrollChangeListener verticalScrollListener;
 
     public CardDraggableView(Context context) {
         super(context);
@@ -145,6 +146,9 @@ public class CardDraggableView extends DraggableView {
     private boolean handleTouch(MotionEvent event) {
         if (super.isDraggable() && !super.isAnimating()) {
             final int action = MotionEventCompat.getActionMasked(event);
+
+            verticalScrollListener.onScrollChange(this, event.getX(), event.getY(), x1, y1);
+
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
                     x1 = event.getX();
@@ -225,5 +229,9 @@ public class CardDraggableView extends DraggableView {
 
     public void setHost(Shuffle shuffle) {
         this.host = shuffle;
+    }
+
+    public void setVerticalScrollListener(Shuffle.OnScrollChangeListener verticalScrollListener) {
+        this.verticalScrollListener = verticalScrollListener;
     }
 }

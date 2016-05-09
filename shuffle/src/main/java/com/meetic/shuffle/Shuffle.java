@@ -38,6 +38,8 @@ public class Shuffle extends FrameLayout {
 
     Set<Listener> listeners = new HashSet<>();
 
+    OnScrollChangeListener verticalScrollListener;
+
     public Shuffle(Context context) {
         this(context, null);
     }
@@ -102,6 +104,11 @@ public class Shuffle extends FrameLayout {
         return adapterPosition;
     }
 
+    public void addVerticalScrollListener(OnScrollChangeListener verticalScrollListener) {
+        this.verticalScrollListener = verticalScrollListener;
+        currentDraggableView.setVerticalScrollListener(this.verticalScrollListener);
+    }
+
     public CardDraggableView getDraggableView(int position) {
         if (position < draggableViews.size()) {
             return draggableViews.get(position);
@@ -127,6 +134,10 @@ public class Shuffle extends FrameLayout {
             }
             ViewCompat.setAlpha(this, 0.5f);
         }
+    }
+
+    public interface OnScrollChangeListener {
+        void onScrollChange(View v, float scrollX, float scrollY, float oldScrollX, float oldScrollY);
     }
 
     @Override
@@ -274,6 +285,9 @@ public class Shuffle extends FrameLayout {
         currentDraggableView = draggableViews.getFirst();
         currentDraggableView.setDraggable(true);
         currentDraggableView.reset();
+        if (verticalScrollListener != null) {
+            currentDraggableView.setVerticalScrollListener(this.verticalScrollListener);
+        }
         currentDraggableView.setDragListener(new DraggableView.DraggableViewListener() {
             @Override
             public void onDrag(DraggableView draggableView, float percentX, float percentY) {
