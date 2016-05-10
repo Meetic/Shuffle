@@ -76,7 +76,7 @@ If you want to set it vertical (by default Suffle is horizontal oriented)
      android:id="@+id/shuffle"
      android:layout_width="match_parent"
      android:layout_height="200dp"
-     app:shuffle_vertical="true / false"
+     app:shuffle_orientation="horizontal / vertical"
      />
 ```
 
@@ -201,7 +201,7 @@ Add into your **build.gradle**
 
 ```groovy
 compile 'com.meetic.shuffle:shuffle:(last version)'
-compile 'com.meetic.dragueur:dragueur:1.0.0'
+compile 'com.meetic.dragueur:dragueur:1.0.1'
 ```
 
 Move your views with [Dragueur][Dragueur] !

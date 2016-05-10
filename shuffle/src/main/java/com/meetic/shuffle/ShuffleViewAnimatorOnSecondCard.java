@@ -49,7 +49,13 @@ public class ShuffleViewAnimatorOnSecondCard extends ShuffleViewAnimator {
         percent = (float) Math.pow(percent, 10);
         percent = Math.min(0.09f, percent);
 
-        ViewCompat.setAlpha(draggableViewBottom.getContent(), percent);
-        ViewCompat.setAlpha(draggableViewBottom.getOverlayView(), 1);
+        if(percent == 0f){
+            ViewCompat.setAlpha(draggableViewBottom.getOverlayView(), 0f);
+            ViewCompat.animate(draggableViewBottom.getContent()).setDuration(100).alpha(1f);
+        } else {
+            ViewCompat.animate(draggableViewBottom.getContent()).cancel();
+            ViewCompat.setAlpha(draggableViewBottom.getContent(), percent);
+            ViewCompat.setAlpha(draggableViewBottom.getOverlayView(), 1f);
+        }
     }
 }

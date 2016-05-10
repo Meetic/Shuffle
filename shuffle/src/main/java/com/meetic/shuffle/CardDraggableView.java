@@ -2,13 +2,17 @@ package com.meetic.shuffle;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.meetic.dragueur.Direction;
 import com.meetic.dragueur.DraggableView;
+import com.meetic.dragueur.ReturnOriginViewAnimator;
 
 public class CardDraggableView extends DraggableView {
 
@@ -118,5 +122,4 @@ public class CardDraggableView extends DraggableView {
         content = (ViewGroup) findViewById(R.id.content);
         overlay = (ViewGroup) findViewById(R.id.overlay);
     }
-
 }

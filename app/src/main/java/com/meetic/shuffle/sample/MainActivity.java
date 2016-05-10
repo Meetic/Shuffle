@@ -46,4 +46,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, EnableDisableActivity.class));
     }
 
+    @OnClick(R.id.stackChange)
+    public void launchStackChange() {
+        startActivity(new Intent(this, StackChangeActivity.class));
+    }
+
+    @OnClick(R.id.wrapContent)
+    public void launchWrapContent() {
+        startActivity(new Intent(this, HorizontalInlineWrapContentActivity.class));
+    }
+
 }

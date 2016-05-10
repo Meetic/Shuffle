@@ -25,6 +25,8 @@
         <activity android:name=".HorizontalInlineWithoutRotationActivity"/>
         <activity android:name=".VerticalActivity"/>
         <activity android:name=".EnableDisableActivity"/>
+        <activity android:name=".StackChangeActivity"/>
+        <activity android:name=".HorizontalInlineWrapContentActivity"/>
     </application>
 
 </manifest>

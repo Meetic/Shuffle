@@ -9,8 +9,12 @@ import android.util.DisplayMetrics;
 public class ShuffleSettings {
 
     public static final float MIN_VELOCITY = 700;
-    private final static int DIFFERENCE_TRANSLATION_Y_DP = 12;
-    private final static int DIFFERENCE_TRANSLATION_X_DP = 0;
+    public final static int DIFFERENCE_TRANSLATION_Y_DP = 12;
+    public final static int DIFFERENCE_TRANSLATION_X_DP = 0;
+    public final static int ORIENTATION_HORIZONTAL = 0;
+    public final static int ORIENTATION_VERTICAL = 1;
+    public final static int STACK_FROM_TOP = 0;
+    public final static int STACK_FROM_BOTTOM = 1;
     int numberOfDisplayedCards = 3;
 
     float differenceScale = 0.02f;
@@ -30,6 +34,8 @@ public class ShuffleSettings {
     boolean rotationEnabled = true;
     float rotation = 45f;
     float minVelocity;
+
+    private boolean stackFromTop;
 
     public static float dpToPx(Context context, float dp) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -147,11 +153,16 @@ public class ShuffleSettings {
         return position * differenceTranslationX;
     }
 
+    public boolean isStackFromTop() {
+        return stackFromTop;
+    }
+
     protected void handleAttributes(Context context, AttributeSet attrs) {
         try {
             TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.Shuffle);
             {
-                this.vertical = styledAttrs.getBoolean(R.styleable.Shuffle_shuffle_vertical, vertical);
+                int orientation = styledAttrs.getInteger(R.styleable.Shuffle_shuffle_orientation, ORIENTATION_HORIZONTAL);
+                this.vertical = orientation == ORIENTATION_VERTICAL;
             }
             {
                 this.rotationEnabled = styledAttrs.getBoolean(R.styleable.Shuffle_shuffle_rotationEnabled, rotationEnabled);
@@ -177,10 +188,13 @@ public class ShuffleSettings {
                 this.colorRight = styledAttrs.getColor(R.styleable.Shuffle_shuffle_colorRight, colorRight);
                 this.layoutRightResId = styledAttrs.getResourceId(R.styleable.Shuffle_shuffle_layoutRight, layoutRightResId);
             }
+            {
+                int stackFrom = styledAttrs.getInteger(R.styleable.Shuffle_shuffle_stackFrom, STACK_FROM_BOTTOM);
+                this.stackFromTop = stackFrom == STACK_FROM_TOP;
+            }
             styledAttrs.recycle();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }

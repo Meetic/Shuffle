@@ -167,7 +167,8 @@ public class Shuffle extends FrameLayout {
 
     @VisibleForTesting
     CardDraggableView generateDraggableView() {
-        return (CardDraggableView) LayoutInflater.from(getContext()).inflate(R.layout.draggable_view, this, false);
+        CardDraggableView cardDraggableView = (CardDraggableView) LayoutInflater.from(getContext()).inflate(R.layout.draggable_view, this, false);
+        return cardDraggableView;
     }
 
     List<ViewHolder> getViewHolderListForType(int viewType) {
