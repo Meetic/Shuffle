@@ -17,7 +17,7 @@
         app:shuffle_layoutLeft="@layout/cell_left"
         app:shuffle_layoutRight="@layout/cell_right"
         app:shuffle_velocityMin="2000"
-        app:shuffle_vertical="true"
+        app:shuffle_orientation="vertical"
         />
 
 </RelativeLayout>

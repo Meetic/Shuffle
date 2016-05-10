@@ -56,6 +56,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         if (shuffle != null) {
 
             final DraggableView lastCard = shuffle.getLastDraggableView();
+            final ShuffleSettings shuffleSettings = shuffle.getShuffleSettings();
 
             { //reset
                 ViewCompat.setRotation(lastCard, 0);
@@ -63,19 +64,20 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
                 lastCard.reset();
             }
 
-            int numberOfCards = shuffle.getShuffleSettings().getNumberOfDisplayedCards();
+            int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
             int position = numberOfCards - 1;
-            float scale = shuffle.getShuffleSettings().getScaleForPosition(position);
+            float scale = shuffleSettings.getScaleForPosition(position);
 
-            float translationY = shuffle.getShuffleSettings().getStackFromTop()
-                ? -shuffle.getShuffleSettings().getTranslationYForPosition(position)
-                : shuffle.getShuffleSettings().getTranslationYForPosition(position);
+            float translationY = shuffleSettings.getTranslationYForPosition(position);
+            if (shuffleSettings.isStackFromTop()) {
+                translationY *= -1;
+            }
 
             ViewCompat.setScaleX(lastCard, 0.5f);
             ViewCompat.setScaleY(lastCard, 0.5f);
             ViewCompat.setTranslationY(lastCard, 0);
 
-            float translationX = shuffle.getShuffleSettings().getTranslationXForPosition(position);
+            float translationX = shuffleSettings.getTranslationXForPosition(position);
             ViewCompat.setTranslationX(lastCard, translationX);
 
             ViewCompat.animate(lastCard)
@@ -89,7 +91,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
                     }
                 })
                 .setStartDelay(100)
-                .setDuration(shuffle.getShuffleSettings().getAnimationReturnCardDuration());
+                .setDuration(shuffleSettings.getAnimationReturnCardDuration());
 
             return true;
         } else {
@@ -100,19 +102,21 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
     public boolean animateViewStackFromRight(@NonNull final Listener listener) {
         if (shuffle != null) {
             final DraggableView lastCard = shuffle.getLastDraggableView();
+            final ShuffleSettings shuffleSettings = shuffle.getShuffleSettings();
 
             { //reset
-                final int numberOfCards = shuffle.getShuffleSettings().getNumberOfDisplayedCards();
+                final int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
                 final int position = numberOfCards - 1;
 
-                float scale = shuffle.getShuffleSettings().getScaleForPosition(position);
+                float scale = shuffleSettings.getScaleForPosition(position);
                 ViewCompat.setScaleX(lastCard, scale);
                 ViewCompat.setScaleY(lastCard, scale);
                 lastCard.reset();
 
-                float translationY = shuffle.getShuffleSettings().getStackFromTop()
-                    ? -shuffle.getShuffleSettings().getTranslationYForPosition(position)
-                    : shuffle.getShuffleSettings().getTranslationYForPosition(position);
+                float translationY = shuffleSettings.getTranslationYForPosition(position);
+                if (shuffleSettings.isStackFromTop()) {
+                    translationY *= -1;
+                }
 
                 ViewCompat.setTranslationY(lastCard, translationY);
 
@@ -130,7 +134,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
                         listener.animationEnd();
                     }
                 })
-                .setDuration(shuffle.getShuffleSettings().getAnimationReturnCardDuration());
+                .setDuration(shuffleSettings.getAnimationReturnCardDuration());
 
             return true;
         } else {
@@ -141,30 +145,33 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
 
     public void updateViewsPositions(float percentX, float percentY) {
         if (shuffle != null) {
-            float percent = shuffle.getShuffleSettings().isVertical() ? percentY : percentX;
-            int numberOfCards = shuffle.getShuffleSettings().getNumberOfDisplayedCards();
+            final ShuffleSettings shuffleSettings = shuffle.getShuffleSettings();
+            float percent = shuffleSettings.isVertical() ? percentY : percentX;
+            int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
             for (int i = 1; i < numberOfCards; ++i) {
                 DraggableView view = shuffle.getDraggableView(i);
 
-                float myScale = shuffle.getShuffleSettings().getScaleForPosition(i);
-                float nextScale = shuffle.getShuffleSettings().getScaleForPosition(i - 1);
+                float myScale = shuffleSettings.getScaleForPosition(i);
+                float nextScale = shuffleSettings.getScaleForPosition(i - 1);
                 float percentAbs = myScale + (nextScale - myScale) * Math.abs(percent);
                 ViewCompat.setScaleX(view, percentAbs);
                 ViewCompat.setScaleY(view, percentAbs);
 
-                float myTranslationY = shuffle.getShuffleSettings().getStackFromTop()
-                    ? -shuffle.getShuffleSettings().getTranslationYForPosition(i)
-                    : shuffle.getShuffleSettings().getTranslationYForPosition(i);
+                float myTranslationY = shuffleSettings.getTranslationYForPosition(i);
+                if (shuffleSettings.isStackFromTop()) {
+                    myTranslationY *= -1;
+                }
 
-                float nextTranslationY = shuffle.getShuffleSettings().getStackFromTop()
-                    ? -shuffle.getShuffleSettings().getTranslationYForPosition(i - 1)
-                    : shuffle.getShuffleSettings().getTranslationYForPosition(i - 1);
+                float nextTranslationY = shuffleSettings.getTranslationYForPosition(i - 1);
+                if (shuffleSettings.isStackFromTop()) {
+                    nextTranslationY *= -1;
+                }
 
                 float translationY = myTranslationY - Math.abs(percent) * (myTranslationY - nextTranslationY);
                 ViewCompat.setTranslationY(view, translationY);
 
-                float myTranslationX = shuffle.getShuffleSettings().getTranslationXForPosition(i);
-                float nextTranslationX = shuffle.getShuffleSettings().getTranslationXForPosition(i - 1);
+                float myTranslationX = shuffleSettings.getTranslationXForPosition(i);
+                float nextTranslationX = shuffleSettings.getTranslationXForPosition(i - 1);
                 float translationX = myTranslationX - Math.abs(percent) * (myTranslationX - nextTranslationX);
                 ViewCompat.setTranslationX(view, translationX);
             }

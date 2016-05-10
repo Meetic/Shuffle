@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Shuffle">
-        <attr name="shuffle_vertical" format="boolean"/>
-        <attr name="shuffle_horizontal" format="boolean"/>
+        <attr name="shuffle_orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
         <attr name="shuffle_inlineMove" format="boolean"/>
         <attr name="shuffle_rotationEnabled" format="boolean"/>
         <attr name="shuffle_rotation" format="float"/>

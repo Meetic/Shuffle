@@ -146,7 +146,7 @@ public class Shuffle extends FrameLayout {
     protected void onViewInflated() {
         int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
         for (int i = numberOfCards - 1; i >= 0; i--) {
-            CardDraggableView draggableView = generateDraggableView(shuffleSettings, this);
+            CardDraggableView draggableView = generateDraggableView();
             draggableView.setDraggable(false);
             updateDraggableView(draggableView);
             draggableViews.addFirst(draggableView);
@@ -167,14 +167,7 @@ public class Shuffle extends FrameLayout {
 
     @VisibleForTesting
     CardDraggableView generateDraggableView() {
-        return (CardDraggableView) LayoutInflater.from(getContext()).inflate(R.layout.draggable_view, this, false);
-    }
-
-    @VisibleForTesting
-    CardDraggableView generateDraggableView(ShuffleSettings shuffleSettings, Shuffle shuffle) {
         CardDraggableView cardDraggableView = (CardDraggableView) LayoutInflater.from(getContext()).inflate(R.layout.draggable_view, this, false);
-        cardDraggableView.setSettings(shuffleSettings);
-        cardDraggableView.setHost(shuffle);
         return cardDraggableView;
     }
 

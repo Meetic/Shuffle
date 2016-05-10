@@ -14,7 +14,7 @@
         app:shuffle_rotation="15"
         app:shuffle_velocityMin="1000"
         app:shuffle_stackFrom="top"
-        app:shuffle_horizontal="true"
+        app:shuffle_orientation="horizontal"
         />
 
 </ScrollView>
