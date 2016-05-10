@@ -15,6 +15,8 @@ import com.meetic.dragueur.Direction;
 import com.meetic.dragueur.DraggableView;
 import com.meetic.dragueur.ViewAnimator;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -127,6 +129,26 @@ public class Shuffle extends FrameLayout {
             }
             ViewCompat.setAlpha(this, 0.5f);
         }
+    }
+
+    public void restartShuffling() {
+        viewAnimator.animateRestartShuffling(new ShuffleViewAnimator.RestartListener() {
+            @Override
+            public void animationStarted() {
+
+            }
+
+            @Override
+            public void animationMiddle() {
+                adapterPosition = 0;
+                updateAdapter();
+            }
+
+            @Override
+            public void animationEnd() {
+
+            }
+        });
     }
 
     @Override

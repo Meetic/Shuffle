@@ -55,5 +55,9 @@ public class MainActivity extends AppCompatActivity {
     public void launchWrapContent() {
         startActivity(new Intent(this, HorizontalInlineWrapContentActivity.class));
     }
+    @OnClick(R.id.restart)
+    public void launchRestart() {
+        startActivity(new Intent(this, RestartActivity.class));
+    }
 
 }

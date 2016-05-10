@@ -7,16 +7,29 @@ import android.view.ViewGroup;
 import com.meetic.shuffle.Shuffle;
 import com.meetic.shuffle.sample.R;
 
-public class TestAdapter extends Shuffle.Adapter<Shuffle.ViewHolder> {
+public class TestAdapter extends Shuffle.Adapter<TestShuffleViewHolder> {
 
-    @Override
-    public Shuffle.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.bal_tmp_cell, viewGroup, false);
-        return new Shuffle.ViewHolder(view);
+    boolean displayText = false;
+
+    public boolean isDisplayText() {
+        return displayText;
+    }
+
+    public void setDisplayText(boolean displayText) {
+        this.displayText = displayText;
     }
 
     @Override
-    public void onBindViewHolder(final Shuffle.ViewHolder viewHolder, int position) {
+    public TestShuffleViewHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.bal_tmp_cell, viewGroup, false);
+        return new TestShuffleViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(TestShuffleViewHolder viewHolder, int position) {
+        if(displayText){
+            viewHolder.bind(position);
+        }
     }
 
     @Override

@@ -110,6 +110,15 @@ With rotation
 
 [![intro](media/inline.gif)][repo]
 
+## Restart
+
+To restart the shuffling
+```java
+shuffle.restartShuffling();
+```
+
+[![intro](media/restart.gif)][repo]
+
 ## Options
 
 You can set the max number of cards displayed and adjust the space between cards

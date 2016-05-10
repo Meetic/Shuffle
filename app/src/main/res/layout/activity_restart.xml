@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <com.meetic.shuffle.Shuffle
+        android:id="@+id/shuffle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        app:shuffle_colorLeft="@color/colorLeft"
+        app:shuffle_colorRight="@color/colorRight"
+        app:shuffle_differenceTranslationY="5dp"
+        app:shuffle_layoutLeft="@layout/cell_left"
+        app:shuffle_layoutRight="@layout/cell_right"
+        app:shuffle_rotation="10"
+        app:shuffle_velocityMin="2000"
+        />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="restart"/>
+
+</RelativeLayout>

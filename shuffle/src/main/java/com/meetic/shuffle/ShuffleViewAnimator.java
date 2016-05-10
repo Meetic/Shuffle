@@ -52,6 +52,36 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         return false;
     }
 
+    public boolean animateRestartShuffling(@NonNull final RestartListener listener) {
+        ViewCompat.animate(shuffle)
+            .alpha(0f)
+            .setListener(new ViewPropertyAnimatorListenerAdapter(){
+                @Override
+                public void onAnimationStart(View view) {
+                    super.onAnimationStart(view);
+                    listener.animationStarted();
+                }
+
+                @Override
+                public void onAnimationEnd(View view) {
+                    super.onAnimationEnd(view);
+                    listener.animationMiddle();
+
+                    ViewCompat.animate(shuffle)
+                        .alpha(1f)
+                        .setListener(new ViewPropertyAnimatorListenerAdapter(){
+                            @Override
+                            public void onAnimationEnd(View view) {
+                                super.onAnimationEnd(view);
+                                listener.animationEnd();
+                            }
+                        });
+                }
+            });
+
+        return false;
+    }
+
     public boolean animateViewStackScaleUp(@NonNull final Listener listener) {
         if (shuffle != null) {
 
@@ -198,5 +228,11 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         }
 
         ViewCompat.setAlpha(draggableView.getOverlayView(), Math.abs(percentX));
+    }
+
+    interface RestartListener {
+        void animationStarted();
+        void animationMiddle();
+        void animationEnd();
     }
 }

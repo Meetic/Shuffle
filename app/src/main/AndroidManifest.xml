@@ -27,6 +27,7 @@
         <activity android:name=".EnableDisableActivity"/>
         <activity android:name=".StackChangeActivity"/>
         <activity android:name=".HorizontalInlineWrapContentActivity"/>
+        <activity android:name=".RestartActivity"/>
     </application>
 
 </manifest>

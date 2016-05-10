@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#f4f5f7">
 
     <ImageView
@@ -11,5 +12,14 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/girl"/>
+
+    <TextView
+        android:id="@+id/text"
+        tools:text="1"
+        android:textSize="50sp"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
