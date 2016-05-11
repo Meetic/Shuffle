@@ -3,6 +3,7 @@ package com.meetic.shuffle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.view.View;
 
@@ -14,6 +15,11 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
 
     @Nullable
     protected Shuffle shuffle;
+
+    boolean pushTopAnimateViewStackScaleUp = true;
+    boolean pushBottomAnimateViewStackScaleUp = true;
+    boolean pushLeftAnimateViewStackScaleUp = true;
+    boolean pushRightAnimateViewStackScaleUp = false;
 
     public ShuffleViewAnimator() {
     }
@@ -36,16 +42,32 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
             if (shuffle.getShuffleSettings().isVertical()) {
                 switch (direction) {
                     case TOP:
-                        return animateViewStackScaleUp(listener);
+                        if (pushTopAnimateViewStackScaleUp) {
+                            return animateViewStackScaleUp(direction, listener);
+                        } else {
+                            return animateViewStackGoBackBehind(direction, listener);
+                        }
                     case BOTTOM:
-                        return animateViewStackScaleUp(listener);
+                        if (pushBottomAnimateViewStackScaleUp) {
+                            return animateViewStackScaleUp(direction, listener);
+                        } else {
+                            return animateViewStackGoBackBehind(direction, listener);
+                        }
                 }
             } else {
                 switch (direction) {
                     case LEFT:
-                        return animateViewStackScaleUp(listener);
+                        if (pushLeftAnimateViewStackScaleUp) {
+                            return animateViewStackScaleUp(direction, listener);
+                        } else {
+                            return animateViewStackGoBackBehind(direction, listener);
+                        }
                     case RIGHT:
-                        return animateViewStackFromRight(listener);
+                        if (pushRightAnimateViewStackScaleUp) {
+                            return animateViewStackScaleUp(direction, listener);
+                        } else {
+                            return animateViewStackGoBackBehind(direction, listener);
+                        }
                 }
             }
         }
@@ -55,7 +77,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
     public boolean animateRestartShuffling(@NonNull final RestartListener listener) {
         ViewCompat.animate(shuffle)
             .alpha(0f)
-            .setListener(new ViewPropertyAnimatorListenerAdapter(){
+            .setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(View view) {
                     super.onAnimationStart(view);
@@ -69,7 +91,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
 
                     ViewCompat.animate(shuffle)
                         .alpha(1f)
-                        .setListener(new ViewPropertyAnimatorListenerAdapter(){
+                        .setListener(new ViewPropertyAnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(View view) {
                                 super.onAnimationEnd(view);
@@ -82,7 +104,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         return false;
     }
 
-    public boolean animateViewStackScaleUp(@NonNull final Listener listener) {
+    public boolean animateViewStackScaleUp(@NonNull Direction direction, @NonNull final Listener listener) {
         if (shuffle != null) {
 
             final DraggableView lastCard = shuffle.getLastDraggableView();
@@ -129,42 +151,65 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         }
     }
 
-    public boolean animateViewStackFromRight(@NonNull final Listener listener) {
+    public boolean animateViewStackGoBackBehind(@NonNull Direction direction, @NonNull final Listener listener) {
         if (shuffle != null) {
             final DraggableView lastCard = shuffle.getLastDraggableView();
             final ShuffleSettings shuffleSettings = shuffle.getShuffleSettings();
 
-            { //reset
-                final int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
-                final int position = numberOfCards - 1;
+            final int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
+            final int position = numberOfCards - 1;
 
+            { //reset
                 float scale = shuffleSettings.getScaleForPosition(position);
                 ViewCompat.setScaleX(lastCard, scale);
                 ViewCompat.setScaleY(lastCard, scale);
                 lastCard.reset();
-
-                float translationY = shuffleSettings.getTranslationYForPosition(position);
-                if (shuffleSettings.isStackFromTop()) {
-                    translationY *= -1;
-                }
-
-                ViewCompat.setTranslationY(lastCard, translationY);
-
                 ViewCompat.setRotation(lastCard, 0);
-                listener.animationStarted();
             }
 
-            float translationX = lastCard.parentWidth;
+            float translationX = 0f;
+            float translationY = 0f;
+            switch (direction) {
+                case RIGHT:
+                    translationX = lastCard.parentWidth;
+                    translationY = shuffleSettings.getTranslationYForPosition(position);
+                    break;
+                case LEFT:
+                    translationY = shuffleSettings.getTranslationYForPosition(position);
+                    translationX = -lastCard.parentWidth;
+                    break;
+                case BOTTOM:
+                    translationY = lastCard.parentHeight * 2;
+                    translationX = 0f;
+                    break;
+                case TOP:
+                    translationY = -lastCard.parentHeight * 2;
+                    translationX = 0f;
+                    break;
+            }
+
+            if (shuffleSettings.isStackFromTop()) {
+                translationY *= -1;
+            }
+
+            listener.animationStarted();
+
+            ViewCompat.setTranslationY(lastCard, translationY);
             ViewCompat.setTranslationX(lastCard, translationX);
-            ViewCompat.animate(lastCard)
-                .translationX(0)
+            ViewPropertyAnimatorCompat animatorCompat = ViewCompat.animate(lastCard)
+                .setDuration(shuffleSettings.getAnimationReturnCardDuration())
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(View view) {
                         listener.animationEnd();
                     }
-                })
-                .setDuration(shuffleSettings.getAnimationReturnCardDuration());
+                });
+
+            if (direction == Direction.TOP || direction == Direction.BOTTOM) {
+                animatorCompat.translationY(0f);
+            } else {
+                animatorCompat.translationX(0f);
+            }
 
             return true;
         } else {
@@ -230,9 +275,47 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         ViewCompat.setAlpha(draggableView.getOverlayView(), Math.abs(percentX));
     }
 
+    public boolean isPushTopAnimateViewStackScaleUp() {
+        return pushTopAnimateViewStackScaleUp;
+    }
+
+    public ShuffleViewAnimator setPushTopAnimateViewStackScaleUp(boolean pushTopAnimateViewStackScaleUp) {
+        this.pushTopAnimateViewStackScaleUp = pushTopAnimateViewStackScaleUp;
+        return this;
+    }
+
+    public boolean isPushBottomAnimateViewStackScaleUp() {
+        return pushBottomAnimateViewStackScaleUp;
+    }
+
+    public ShuffleViewAnimator setPushBottomAnimateViewStackScaleUp(boolean pushBottomAnimateViewStackScaleUp) {
+        this.pushBottomAnimateViewStackScaleUp = pushBottomAnimateViewStackScaleUp;
+        return this;
+    }
+
+    public boolean isPushLeftAnimateViewStackScaleUp() {
+        return pushLeftAnimateViewStackScaleUp;
+    }
+
+    public ShuffleViewAnimator setPushLeftAnimateViewStackScaleUp(boolean pushLeftAnimateViewStackScaleUp) {
+        this.pushLeftAnimateViewStackScaleUp = pushLeftAnimateViewStackScaleUp;
+        return this;
+    }
+
+    public boolean isPushRightAnimateViewStackScaleUp() {
+        return pushRightAnimateViewStackScaleUp;
+    }
+
+    public ShuffleViewAnimator setPushRightAnimateViewStackScaleUp(boolean pushRightAnimateViewStackScaleUp) {
+        this.pushRightAnimateViewStackScaleUp = pushRightAnimateViewStackScaleUp;
+        return this;
+    }
+
     interface RestartListener {
         void animationStarted();
+
         void animationMiddle();
+
         void animationEnd();
     }
 }

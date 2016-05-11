@@ -7,6 +7,7 @@ import android.util.Log;
 import com.meetic.dragueur.Direction;
 import com.meetic.dragueur.DraggableView;
 import com.meetic.shuffle.Shuffle;
+import com.meetic.shuffle.ShuffleViewAnimator;
 import com.meetic.shuffle.sample.adapter.TestAdapter;
 
 import butterknife.Bind;
@@ -21,6 +22,10 @@ public class HorizontalInlineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_inline);
         ButterKnife.bind(this);
+        shuffle.setViewAnimator(new ShuffleViewAnimator()
+            .setPushLeftAnimateViewStackScaleUp(false)
+            .setPushRightAnimateViewStackScaleUp(false)
+        );
         shuffle.addListener(new Shuffle.Listener() {
             @Override
             public void onViewChanged(int position) {

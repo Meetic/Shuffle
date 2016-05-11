@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.meetic.shuffle.Shuffle;
+import com.meetic.shuffle.ShuffleViewAnimator;
 import com.meetic.shuffle.sample.adapter.TestAdapter;
 
 import butterknife.Bind;
@@ -19,6 +20,11 @@ public class VerticalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vertical);
         ButterKnife.bind(this);
         shuffle.setShuffleAdapter(new TestAdapter());
+
+        shuffle.setViewAnimator(new ShuffleViewAnimator()
+            .setPushTopAnimateViewStackScaleUp(false)
+            .setPushBottomAnimateViewStackScaleUp(false)
+        );
     }
 
 }

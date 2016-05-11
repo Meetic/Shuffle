@@ -196,6 +196,19 @@ shuffle.setViewAnimator(new ShuffleViewAnimator(){
 
 Try `ShuffleViewAnimator` and `ShuffleViewAnimatorOnSecondCard
 
+# ShuffleViewAnimator
+
+You can easily set dismiss animations for `ShuffleViewAnimator` ( scaleUp / goBackBehind )
+
+```java
+shuffle.setViewAnimator(new ShuffleViewAnimator()
+            .setPushLeftAnimateViewStackScaleUp(false)
+            .setPushRightAnimateViewStackScaleUp(true)
+            .setPushTopAnimateViewStackScaleUp(false)
+            .setPushBottomAnimateViewStackScaleUp(false)
+        );
+```
+
 # Enable
 
 ```java
