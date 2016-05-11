@@ -223,12 +223,16 @@ Add into your **build.gradle**
 
 ```groovy
 compile 'com.meetic.shuffle:shuffle:(last version)'
-compile 'com.meetic.dragueur:dragueur:1.0.1'
+compile 'com.meetic.dragueur:dragueur:1.0.2'
 ```
 
 Move your views with [Dragueur][Dragueur] !
 
 #Log
+
+1.0.4
+
+- Layer animations 
 
 1.0.3
 

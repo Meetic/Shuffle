@@ -32,7 +32,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
     public boolean animateToOrigin(@NonNull CardDraggableView draggableView, int duration) {
         boolean animating = super.animateToOrigin(draggableView, duration);
         if (animating) {
-            ViewCompat.animate(draggableView.getOverlayView()).alpha(0f).setDuration(duration);
+            ViewCompat.animate(draggableView.getOverlayView()).withLayer().alpha(0f).setDuration(duration);
         }
         return animating;
     }
@@ -77,6 +77,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
     public boolean animateRestartShuffling(@NonNull final RestartListener listener) {
         ViewCompat.animate(shuffle)
             .alpha(0f)
+            .withLayer()
             .setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(View view) {
@@ -91,6 +92,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
 
                     ViewCompat.animate(shuffle)
                         .alpha(1f)
+                        .withLayer()
                         .setListener(new ViewPropertyAnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(View view) {
@@ -133,6 +135,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
             ViewCompat.setTranslationX(lastCard, translationX);
 
             ViewCompat.animate(lastCard)
+                .withLayer()
                 .scaleX(scale)
                 .scaleY(scale)
                 .translationY(translationY)
@@ -197,6 +200,7 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
             ViewCompat.setTranslationY(lastCard, translationY);
             ViewCompat.setTranslationX(lastCard, translationX);
             ViewPropertyAnimatorCompat animatorCompat = ViewCompat.animate(lastCard)
+                .withLayer()
                 .setDuration(shuffleSettings.getAnimationReturnCardDuration())
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
                     @Override

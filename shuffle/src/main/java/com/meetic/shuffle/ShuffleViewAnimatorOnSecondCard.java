@@ -18,6 +18,7 @@ public class ShuffleViewAnimatorOnSecondCard extends ShuffleViewAnimator {
     public void resetCard(final CardDraggableView draggableView, int duration) {
         final int delay = duration;
         ViewCompat.animate(draggableView.getOverlayView())
+            .withLayer()
             .alpha(0)
             .setListener(new ViewPropertyAnimatorListenerAdapter() {
                 @Override
@@ -28,6 +29,7 @@ public class ShuffleViewAnimatorOnSecondCard extends ShuffleViewAnimator {
             })
             .setStartDelay(delay);
         ViewCompat.animate(draggableView.getContent())
+            .withLayer()
             .alpha(1)
             .setStartDelay(delay);
 
@@ -51,7 +53,7 @@ public class ShuffleViewAnimatorOnSecondCard extends ShuffleViewAnimator {
 
         if(percent == 0f){
             ViewCompat.setAlpha(draggableViewBottom.getOverlayView(), 0f);
-            ViewCompat.animate(draggableViewBottom.getContent()).setDuration(100).alpha(1f);
+            ViewCompat.animate(draggableViewBottom.getContent()).withLayer().setDuration(100).alpha(1f);
         } else {
             ViewCompat.animate(draggableViewBottom.getContent()).cancel();
             ViewCompat.setAlpha(draggableViewBottom.getContent(), percent);
