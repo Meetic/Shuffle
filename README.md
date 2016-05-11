@@ -228,6 +228,16 @@ compile 'com.meetic.dragueur:dragueur:1.0.1'
 
 Move your views with [Dragueur][Dragueur] !
 
+#Log
+
+1.0.3
+
+- ShuffleViewAnimator is now customisable
+
+1.0.2
+
+- added restart shuffling
+
 # Credits
 
 A project initiated by Meetic
