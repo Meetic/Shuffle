@@ -258,28 +258,30 @@ public class Shuffle extends FrameLayout {
             int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
             for (int i = 0; i < numberOfCards; i++) {
                 int position = adapterPosition + i;
-                CardDraggableView draggableView = draggableViews.get(i);
-                ViewGroup draggableViewContent = draggableView.getContent();
-                if (position < itemCount) {
-                    draggableView.setVisibility(VISIBLE);
-                    int type = shuffleAdapter.getItemViewType(position);
+                if(position < draggableViews.size()) {
+                    CardDraggableView draggableView = draggableViews.get(i);
+                    ViewGroup draggableViewContent = draggableView.getContent();
+                    if (position < itemCount) {
+                        draggableView.setVisibility(VISIBLE);
+                        int type = shuffleAdapter.getItemViewType(position);
 
-                    List<ViewHolder> viewHolderList = getViewHolderListForType(type);
-                    ViewHolder viewHolder = getNextUnusedViewHolder(viewHolderList);
+                        List<ViewHolder> viewHolderList = getViewHolderListForType(type);
+                        ViewHolder viewHolder = getNextUnusedViewHolder(viewHolderList);
 
-                    if (viewHolder == null) {
-                        viewHolder = shuffleAdapter.onCreateViewHolder(draggableView, type);
-                        viewHolderList.add(viewHolder);
+                        if (viewHolder == null) {
+                            viewHolder = shuffleAdapter.onCreateViewHolder(draggableView, type);
+                            viewHolderList.add(viewHolder);
+                        }
+
+                        draggableViewContent.removeAllViews();
+                        draggableViewContent.addView(viewHolder.itemView);
+
+                        viewHolder.position = position;
+
+                        shuffleAdapter.onBindViewHolder(viewHolder, position);
+                    } else {
+                        draggableView.setVisibility(GONE);
                     }
-
-                    draggableViewContent.removeAllViews();
-                    draggableViewContent.addView(viewHolder.itemView);
-
-                    viewHolder.position = position;
-
-                    shuffleAdapter.onBindViewHolder(viewHolder, position);
-                } else {
-                    draggableView.setVisibility(GONE);
                 }
             }
         }
