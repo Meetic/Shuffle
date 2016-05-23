@@ -28,6 +28,7 @@
         <activity android:name=".StackChangeActivity"/>
         <activity android:name=".HorizontalInlineWrapContentActivity"/>
         <activity android:name=".RestartActivity"/>
+        <activity android:name=".RevertActivity"/>
     </application>
 
 </manifest>

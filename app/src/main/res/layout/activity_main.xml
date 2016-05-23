@@ -64,5 +64,11 @@
             android:layout_height="wrap_content"
             android:text="restart"/>
 
+        <Button
+            android:id="@+id/revert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="revert"/>
+
     </LinearLayout>
 </ScrollView>

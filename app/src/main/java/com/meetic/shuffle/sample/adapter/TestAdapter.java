@@ -15,8 +15,9 @@ public class TestAdapter extends Shuffle.Adapter<TestShuffleViewHolder> {
         return displayText;
     }
 
-    public void setDisplayText(boolean displayText) {
+    public TestAdapter setDisplayText(boolean displayText) {
         this.displayText = displayText;
+        return this;
     }
 
     @Override
@@ -34,6 +35,6 @@ public class TestAdapter extends Shuffle.Adapter<TestShuffleViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 20;
     }
 }

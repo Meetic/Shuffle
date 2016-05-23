@@ -15,8 +15,6 @@ import com.meetic.dragueur.Direction;
 import com.meetic.dragueur.DraggableView;
 import com.meetic.dragueur.ViewAnimator;
 
-import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -115,6 +113,10 @@ public class Shuffle extends FrameLayout {
         return draggableViews.getLast();
     }
 
+    public CardDraggableView getFirstDraggableView() {
+        return draggableViews.getFirst();
+    }
+
     public void enable(boolean enable) {
         if (enable) {
             DraggableView firstDraggableView = draggableViews.getFirst();
@@ -149,6 +151,28 @@ public class Shuffle extends FrameLayout {
 
             }
         });
+    }
+
+    public void revert(int duration) {
+        if (adapterPosition > 0) {
+            viewAnimator.animateRevert(duration, new ShuffleViewAnimator.RestartListener() {
+                @Override
+                public void animationStarted() {
+                    adapterPosition--;
+                    updateAdapter();
+                    dispatchAdapterPositionToListeners();
+                }
+
+                @Override
+                public void animationMiddle() {
+                }
+
+                @Override
+                public void animationEnd() {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -258,7 +282,7 @@ public class Shuffle extends FrameLayout {
             int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
             for (int i = 0; i < numberOfCards; i++) {
                 int position = adapterPosition + i;
-                if(position < draggableViews.size()) {
+                if (i < draggableViews.size()) {
                     CardDraggableView draggableView = draggableViews.get(i);
                     ViewGroup draggableViewContent = draggableView.getContent();
                     if (position < itemCount) {

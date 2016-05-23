@@ -119,6 +119,16 @@ shuffle.restartShuffling();
 
 [![intro](media/restart.gif)][repo]
 
+## Revert
+
+To undo a card exit
+```java
+shuffle.revert(duration);
+```
+
+[![intro](media/revert.gif)][repo]
+
+
 ## Options
 
 You can set the max number of cards displayed and adjust the space between cards
@@ -223,12 +233,16 @@ Add into your **build.gradle**
 
 ```groovy
 compile 'com.meetic.shuffle:shuffle:(last version)'
-compile 'com.meetic.dragueur:dragueur:1.0.2'
+compile 'com.meetic.dragueur:dragueur:1.0.3'
 ```
 
 Move your views with [Dragueur][Dragueur] !
 
 #Log
+
+1.0.5
+
+- revert
 
 1.0.4
 
