@@ -114,75 +114,80 @@ public class ShuffleViewAnimator extends ExitViewAnimator<CardDraggableView> {
         }
         final int position = 0;
         final DraggableView firstCard = shuffle.getFirstDraggableView();
-        final ShuffleSettings shuffleSettings = shuffle.getShuffleSettings();
+        if (!firstCard.isAnimating()) {
+            final ShuffleSettings shuffleSettings = shuffle.getShuffleSettings();
 
-        { //reset
-            float scale = shuffleSettings.getScaleForPosition(position);
-            ViewCompat.setScaleX(firstCard, scale);
-            ViewCompat.setScaleY(firstCard, scale);
-            firstCard.reset();
-            ViewCompat.setRotation(firstCard, 0);
-        }
-
-        {
-            float translationX = 0f;
-            float translationY = 0f;
-            switch (getLastExitDirection()) {
-                case RIGHT:
-                    translationX = firstCard.getParentWidth();
-                    translationY = shuffleSettings.getTranslationYForPosition(position);
-                    break;
-                case LEFT:
-                    translationY = shuffleSettings.getTranslationYForPosition(position);
-                    translationX = -firstCard.getParentWidth();
-                    break;
-                case BOTTOM:
-                    translationY = firstCard.getParentHeight() * 2;
-                    translationX = 0f;
-                    break;
-                case TOP:
-                    translationY = -firstCard.getParentHeight() * 2;
-                    translationX = 0f;
-                    break;
+            { //reset
+                float scale = shuffleSettings.getScaleForPosition(position);
+                ViewCompat.setScaleX(firstCard, scale);
+                ViewCompat.setScaleY(firstCard, scale);
+                firstCard.reset();
+                ViewCompat.setRotation(firstCard, 0);
             }
 
-            if (shuffleSettings.isStackFromTop()) {
-                translationY *= -1;
+            {
+                float translationX = 0f;
+                float translationY = 0f;
+                switch (getLastExitDirection()) {
+                    case RIGHT:
+                        translationX = firstCard.getParentWidth();
+                        translationY = shuffleSettings.getTranslationYForPosition(position);
+                        break;
+                    case LEFT:
+                        translationY = shuffleSettings.getTranslationYForPosition(position);
+                        translationX = -firstCard.getParentWidth();
+                        break;
+                    case BOTTOM:
+                        translationY = firstCard.getParentHeight() * 2;
+                        translationX = 0f;
+                        break;
+                    case TOP:
+                        translationY = -firstCard.getParentHeight() * 2;
+                        translationX = 0f;
+                        break;
+                }
+
+                if (shuffleSettings.isStackFromTop()) {
+                    translationY *= -1;
+                }
+
+                ViewCompat.setTranslationY(firstCard, translationY);
+                ViewCompat.setTranslationX(firstCard, translationX);
             }
 
-            ViewCompat.setTranslationY(firstCard, translationY);
-            ViewCompat.setTranslationX(firstCard, translationX);
-        }
+            ViewPropertyAnimatorCompat animatorCompat = ViewCompat.animate(firstCard)
+                .withLayer()
+                .setDuration(duration)
+                .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(View view) {
+                        super.onAnimationStart(view);
+                        listener.animationStarted();
+                    }
 
-        ViewPropertyAnimatorCompat animatorCompat = ViewCompat.animate(firstCard)
-            .withLayer()
-            .setDuration(duration)
-            .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(View view) {
-                    super.onAnimationStart(view);
-                    listener.animationStarted();
-                }
+                    @Override
+                    public void onAnimationEnd(View view) {
+                        listener.animationEnd();
+                        firstCard.setAnimating(false);
+                    }
+                })
+                .setUpdateListener(new ViewPropertyAnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(View view) {
+                        notifyDraggableViewUpdated((CardDraggableView) firstCard);
+                    }
+                });
 
-                @Override
-                public void onAnimationEnd(View view) {
-                    listener.animationEnd();
-                }
-            })
-            .setUpdateListener(new ViewPropertyAnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(View view) {
-                    notifyDraggableViewUpdated((CardDraggableView) firstCard);
-                }
-            });
+            if (lastExitDirection == Direction.TOP || lastExitDirection == Direction.BOTTOM) {
+                animatorCompat.translationY(0f);
+            } else {
+                animatorCompat.translationX(0f);
+            }
 
-        if (lastExitDirection == Direction.TOP || lastExitDirection == Direction.BOTTOM) {
-            animatorCompat.translationY(0f);
+            return true;
         } else {
-            animatorCompat.translationX(0f);
+            return false;
         }
-
-        return true;
     }
 
     public boolean animateViewStackScaleUp(@NonNull Direction direction, @NonNull final Listener listener) {

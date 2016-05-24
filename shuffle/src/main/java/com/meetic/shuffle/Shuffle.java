@@ -155,6 +155,7 @@ public class Shuffle extends FrameLayout {
 
     public void revert(int duration) {
         if (adapterPosition > 0) {
+            moveLastCardToTop();
             viewAnimator.animateRevert(duration, new ShuffleViewAnimator.RestartListener() {
                 @Override
                 public void animationStarted() {
@@ -165,11 +166,12 @@ public class Shuffle extends FrameLayout {
 
                 @Override
                 public void animationMiddle() {
+
                 }
 
                 @Override
                 public void animationEnd() {
-
+                    setFirstCardDraggable();
                 }
             });
         }
@@ -290,7 +292,7 @@ public class Shuffle extends FrameLayout {
                         int type = shuffleAdapter.getItemViewType(position);
 
                         List<ViewHolder> viewHolderList = getViewHolderListForType(type);
-                        ViewHolder viewHolder = getNextUnusedViewHolder(viewHolderList);
+                        ViewHolder viewHolder = getNextUnusedViewHolder(viewHolderList, position);
 
                         if (viewHolder == null) {
                             viewHolder = shuffleAdapter.onCreateViewHolder(draggableView, type);
@@ -367,9 +369,24 @@ public class Shuffle extends FrameLayout {
         }
     }
 
+    void moveLastCardToTop() {
+        //replace views
+        CardDraggableView lastCard = draggableViews.removeLast();
+        draggableViews.addFirst(lastCard);
+
+        //reorganize views Z order
+        removeAllViews();
+        int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
+        for (int i = numberOfCards - 1; i >= 0; i--) {
+            addView(draggableViews.get(i));
+        }
+
+        checkScrollFinished();
+    }
+
     void moveFirstCardToStack() {
         //replace views
-        CardDraggableView firstCard = draggableViews.pop();
+        CardDraggableView firstCard = draggableViews.removeFirst();
         draggableViews.addLast(firstCard);
 
         //reorganize views Z order
@@ -387,9 +404,9 @@ public class Shuffle extends FrameLayout {
     }
 
     @Nullable
-    static ViewHolder getNextUnusedViewHolder(List<ViewHolder> list) {
+    static ViewHolder getNextUnusedViewHolder(List<ViewHolder> list, int position) {
         for (ViewHolder viewHolder : list) {
-            if (viewHolder.position == -1) {
+            if (viewHolder.position == -1 || viewHolder.position == position) {
                 return viewHolder;
             }
         }
