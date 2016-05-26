@@ -142,8 +142,12 @@ public class Shuffle extends FrameLayout {
 
             @Override
             public void animationMiddle() {
-                adapterPosition = 0;
-                updateAdapter();
+                try {
+                    adapterPosition = 0;
+                    updateAdapter();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -171,7 +175,11 @@ public class Shuffle extends FrameLayout {
 
                 @Override
                 public void animationEnd() {
-                    setFirstCardDraggable();
+                    try {
+                        setFirstCardDraggable();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -281,32 +289,34 @@ public class Shuffle extends FrameLayout {
         checkScrollStarted();
         if (shuffleAdapter != null) {
             int itemCount = shuffleAdapter.getItemCount();
-            int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
-            for (int i = 0; i < numberOfCards; i++) {
-                int position = adapterPosition + i;
-                if (i < draggableViews.size()) {
-                    CardDraggableView draggableView = draggableViews.get(i);
-                    ViewGroup draggableViewContent = draggableView.getContent();
-                    if (position < itemCount) {
-                        draggableView.setVisibility(VISIBLE);
-                        int type = shuffleAdapter.getItemViewType(position);
+            if (itemCount != 0) {
+                int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
+                for (int i = 0; i < numberOfCards; i++) {
+                    int position = adapterPosition + i;
+                    if (i < draggableViews.size()) {
+                        CardDraggableView draggableView = draggableViews.get(i);
+                        ViewGroup draggableViewContent = draggableView.getContent();
+                        if (position < itemCount) {
+                            draggableView.setVisibility(VISIBLE);
+                            int type = shuffleAdapter.getItemViewType(position);
 
-                        List<ViewHolder> viewHolderList = getViewHolderListForType(type);
-                        ViewHolder viewHolder = getNextUnusedViewHolder(viewHolderList, position);
+                            List<ViewHolder> viewHolderList = getViewHolderListForType(type);
+                            ViewHolder viewHolder = getNextUnusedViewHolder(viewHolderList, position);
 
-                        if (viewHolder == null) {
-                            viewHolder = shuffleAdapter.onCreateViewHolder(draggableView, type);
-                            viewHolderList.add(viewHolder);
+                            if (viewHolder == null) {
+                                viewHolder = shuffleAdapter.onCreateViewHolder(draggableView, type);
+                                viewHolderList.add(viewHolder);
+                            }
+
+                            draggableViewContent.removeAllViews();
+                            draggableViewContent.addView(viewHolder.itemView);
+
+                            viewHolder.position = position;
+
+                            shuffleAdapter.onBindViewHolder(viewHolder, position);
+                        } else {
+                            draggableView.setVisibility(GONE);
                         }
-
-                        draggableViewContent.removeAllViews();
-                        draggableViewContent.addView(viewHolder.itemView);
-
-                        viewHolder.position = position;
-
-                        shuffleAdapter.onBindViewHolder(viewHolder, position);
-                    } else {
-                        draggableView.setVisibility(GONE);
                     }
                 }
             }
@@ -314,45 +324,47 @@ public class Shuffle extends FrameLayout {
     }
 
     void setFirstCardDraggable() {
-        currentDraggableView = draggableViews.getFirst();
-        currentDraggableView.setDraggable(true);
-        currentDraggableView.reset();
-        currentDraggableView.setDragListener(new DraggableView.DraggableViewListener() {
-            @Override
-            public void onDrag(DraggableView draggableView, float percentX, float percentY) {
-                viewAnimator.updateViewsPositions(percentX, percentY);
-                dispatchViewScrolledToListeners(draggableView, percentX, percentY);
-            }
+        if (!draggableViews.isEmpty()) {
+            currentDraggableView = draggableViews.getFirst();
+            currentDraggableView.setDraggable(true);
+            currentDraggableView.reset();
+            currentDraggableView.setDragListener(new DraggableView.DraggableViewListener() {
+                @Override
+                public void onDrag(DraggableView draggableView, float percentX, float percentY) {
+                    viewAnimator.updateViewsPositions(percentX, percentY);
+                    dispatchViewScrolledToListeners(draggableView, percentX, percentY);
+                }
 
-            @Override
-            public void onDraggedStarted(DraggableView draggableView, Direction direction) {
+                @Override
+                public void onDraggedStarted(DraggableView draggableView, Direction direction) {
 
-            }
+                }
 
-            @Override
-            public void onDraggedEnded(final DraggableView draggableView, final Direction direction) {
-                draggableView.setDraggable(false);
-                moveFirstCardToStack();
-                viewAnimator.animateViewStackFrom(new ViewAnimator.Listener() {
-                    @Override
-                    public void animationStarted() {
-                    }
+                @Override
+                public void onDraggedEnded(final DraggableView draggableView, final Direction direction) {
+                    draggableView.setDraggable(false);
+                    moveFirstCardToStack();
+                    viewAnimator.animateViewStackFrom(new ViewAnimator.Listener() {
+                        @Override
+                        public void animationStarted() {
+                        }
 
-                    @Override
-                    public void animationEnd() {
-                        dispatchExitedToListeners(draggableView, direction);
-                        setFirstCardDraggable();
-                    }
-                }, direction);
-            }
+                        @Override
+                        public void animationEnd() {
+                            dispatchExitedToListeners(draggableView, direction);
+                            setFirstCardDraggable();
+                        }
+                    }, direction);
+                }
 
-            @Override
-            public void onDragCancelled(DraggableView draggableView) {
+                @Override
+                public void onDragCancelled(DraggableView draggableView) {
 
-            }
+                }
 
-        });
-        viewAnimator.updateViewsPositions(0, 0);
+            });
+            viewAnimator.updateViewsPositions(0, 0);
+        }
     }
 
     void checkScrollStarted() {

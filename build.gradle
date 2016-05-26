@@ -22,7 +22,7 @@ ext {
     sdk = 23
     buildTools = "23.0.3"
     minSdk = 10
-    libraryVersion = "1.0.6"
+    libraryVersion = "1.0.7"
 }
 
 allprojects {
