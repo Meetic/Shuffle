@@ -29,6 +29,7 @@
         <activity android:name=".HorizontalInlineWrapContentActivity"/>
         <activity android:name=".RestartActivity"/>
         <activity android:name=".RevertActivity"/>
+        <activity android:name=".InfitiniteActivity"/>
     </application>
 
 </manifest>

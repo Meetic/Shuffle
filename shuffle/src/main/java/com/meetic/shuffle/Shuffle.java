@@ -288,12 +288,17 @@ public class Shuffle extends FrameLayout {
     void updateAdapter() {
         checkScrollStarted();
         if (shuffleAdapter != null) {
+            boolean infinite = shuffleSettings.isInfinite();
             int itemCount = shuffleAdapter.getItemCount();
             if (itemCount != 0) {
                 int numberOfCards = shuffleSettings.getNumberOfDisplayedCards();
                 for (int i = 0; i < numberOfCards; i++) {
                     int position = adapterPosition + i;
-                    if (i < draggableViews.size()) {
+                    if (infinite) {
+                        position = position % itemCount;
+                    }
+                    int size = draggableViews.size();
+                    if (i < size) {
                         CardDraggableView draggableView = draggableViews.get(i);
                         ViewGroup draggableViewContent = draggableView.getContent();
                         if (position < itemCount) {

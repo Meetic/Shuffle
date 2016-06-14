@@ -66,4 +66,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, RevertActivity.class));
     }
 
+    @OnClick(R.id.infinite)
+    public void launchInfinite() {
+        startActivity(new Intent(this, InfitiniteActivity.class));
+    }
+
 }

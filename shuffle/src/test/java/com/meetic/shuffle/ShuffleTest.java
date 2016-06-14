@@ -112,7 +112,7 @@ public class ShuffleTest {
             mockShuffleViewHolder(2)
         );
         //When
-        Shuffle.ViewHolder returnedHolder = Shuffle.getNextUnusedViewHolder(viewHolderList);
+        Shuffle.ViewHolder returnedHolder = Shuffle.getNextUnusedViewHolder(viewHolderList, 0);
         //Then
         assertThat(returnedHolder.position).isEqualTo(-1);
     }
@@ -126,7 +126,7 @@ public class ShuffleTest {
             mockShuffleViewHolder(3)
         );
         //When
-        Shuffle.ViewHolder returnedHolder = Shuffle.getNextUnusedViewHolder(viewHolderList);
+        Shuffle.ViewHolder returnedHolder = Shuffle.getNextUnusedViewHolder(viewHolderList, 0);
         //Then
         assertThat(returnedHolder).isNull();
     }

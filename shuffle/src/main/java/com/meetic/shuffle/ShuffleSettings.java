@@ -36,6 +36,7 @@ public class ShuffleSettings {
     float minVelocity;
 
     private boolean stackFromTop;
+    private boolean infinite = false;
 
     public static float dpToPx(Context context, float dp) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -157,6 +158,14 @@ public class ShuffleSettings {
         return stackFromTop;
     }
 
+    public boolean isInfinite() {
+        return infinite;
+    }
+
+    public void setInfinite(boolean infinite) {
+        this.infinite = infinite;
+    }
+
     protected void handleAttributes(Context context, AttributeSet attrs) {
         try {
             TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.Shuffle);
@@ -181,6 +190,9 @@ public class ShuffleSettings {
             }
             {
                 this.minVelocity = styledAttrs.getFloat(R.styleable.Shuffle_shuffle_velocityMin, MIN_VELOCITY);
+            }
+            {
+                this.infinite = styledAttrs.getBoolean(R.styleable.Shuffle_shuffle_infinite, infinite);
             }
             {
                 this.colorLeft = styledAttrs.getColor(R.styleable.Shuffle_shuffle_colorLeft, colorLeft);

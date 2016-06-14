@@ -128,6 +128,18 @@ shuffle.revert(duration);
 
 [![intro](media/revert.gif)][repo]
 
+## Infinite
+
+```xml
+<com.meetic.shuffle.Shuffle
+     android:id="@+id/shuffle"
+     android:layout_width="match_parent"
+     android:layout_height="200dp"
+     app:shuffle_infinite="true"
+     />
+```
+
+[![intro](media/infinite.gif)][repo]
 
 ## Options
 
@@ -239,6 +251,10 @@ compile 'com.meetic.dragueur:dragueur:1.0.3'
 Move your views with [Dragueur][Dragueur] !
 
 #Log
+
+1.0.8
+
+- infinite
 
 1.0.6
 
